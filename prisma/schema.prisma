@@ -16,6 +16,7 @@ model User {
   createdAt DateTime @default(now())
   chats     Chat[]
   generations Generation[]
+  generatedImages GeneratedImage[]
 }
 
 model Chat {
@@ -36,10 +37,36 @@ model Message {
 }
 
 model Generation {
+  id        String   @id @default(cuid())
+  prompt    String
+  imageUrl  String
+  userEmail String
+  createdAt DateTime @default(now())
+}
+
+model GeneratedImage {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  prompt    String
+  userEmail String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userEmail], references: [email])
+
+  @@index([userEmail])
+}
+
+// Add this model to your existing schema
+model UserSettings {
   id          String   @id @default(cuid())
-  prompt      String
-  imageUrl    String   // Changed from output to imageUrl
+  userEmail   String   @unique
+  theme       String   @default("light")
+  notifications Boolean @default(true)
+  emailUpdates Boolean @default(false)
+  imageQuality String  @default("high")
+  autoSave    Boolean @default(true)
+  language    String  @default("en")
   createdAt   DateTime @default(now())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  updatedAt   DateTime @updatedAt
+
+  @@index([userEmail])
 }

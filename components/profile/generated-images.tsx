@@ -1,9 +1,6 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { ImageGenerator } from "@/components/generate/image-generator";
-import { ImageGallery } from "@/components/shared/image-gallery";
-import { useSession } from "next-auth/react";
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { ImageGallery } from '@/components/shared/image-gallery';
 
 interface GeneratedImage {
   id: string;
@@ -12,7 +9,7 @@ interface GeneratedImage {
   prompt: string;
 }
 
-export default function GeneratePage() {
+export function GeneratedImages() {
   const { data: session } = useSession();
   const [images, setImages] = useState<GeneratedImage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,22 +39,12 @@ export default function GeneratePage() {
     fetchGeneratedImages();
   }, [session]);
 
-  const handleNewImage = (newImage: GeneratedImage) => {
-    setImages(prev => [newImage, ...prev]);
-  };
-
   return (
-    <div className="container max-w-6xl p-4 space-y-8">
-      <ImageGenerator onImageGenerated={handleNewImage} />
-      
-      <div className="mt-12">
-        <ImageGallery 
-          title="Your Recent Generations"
-          images={images}
-          isLoading={isLoading}
-          error={error}
-        />
-      </div>
-    </div>
+    <ImageGallery 
+      title="Your Generated Images"
+      images={images}
+      isLoading={isLoading}
+      error={error}
+    />
   );
 }

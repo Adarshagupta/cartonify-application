@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { Loader2, Settings, LogOut, User, Calendar, Mail, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { GeneratedImages } from '@/components/profile/generated-images';
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -123,6 +124,11 @@ export default function ProfilePage() {
           View your <Link href="/history" className="text-primary hover:underline">generation history</Link> to see your created images
         </p>
       </Card>
+
+      {/* Add the Generated Images section */}
+      <section className="mt-12">
+        <GeneratedImages />
+      </section>
     </div>
   );
 }

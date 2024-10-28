@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
 
 interface AuthDialogProps {
   open: boolean;
@@ -17,6 +18,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,6 +54,17 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSignIn = async (provider: string) => {
+    try {
+      setIsLoading(true);
+      await signIn(provider);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -98,6 +111,22 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
               : "Already have an account? Login"}
           </Button>
         </div>
+        <Button 
+          onClick={() => handleSignIn('google')} 
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div className="flex items-center">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Signing in...
+            </div>
+          ) : (
+            <>
+              <FaGoogle className="mr-2" />
+              Sign in with Google
+            </>
+          )}
+        </Button>
       </DialogContent>
     </Dialog>
   );
