@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "DATABASE_URL=postgresql://neondb_owner:wcJdUmnEu83o@ep-crimson-wildflower-a8t6opde.eastus2.azure.neon.tech/neondb?sslmode=require next build",
     "start": "next start",
     "lint": "next lint"
   },
