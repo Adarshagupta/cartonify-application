@@ -4,6 +4,15 @@ import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { DefaultUser } from "next-auth"
+
+// Extend the built-in User type
+declare module "next-auth" {
+  interface User extends DefaultUser {
+    createdAt: Date
+    id: string
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
